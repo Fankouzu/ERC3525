@@ -13,21 +13,21 @@ requires: 20, 165, 721
 
 ## Abstract
 
-这是半可替代代币的标准。本文档中描述的智能合约接口集定义了一个 [EIP-721](./eip-721.md) 兼容的代币标准。 该标准引入了一个`<ID, SLOT, VALUE>` 三重标量模型，表示代币的半可替代结构。它还引入了新的转移模型以及反映代币半可替代性质的批准模型。
+这是半可替代Token的标准。本文档中描述的智能合约接口集定义了一个 [EIP-721](./eip-721.md) 兼容的Token标准。 该标准引入了一个`<ID, SLOT, VALUE>` 三重模型，表示Token的半可替代结构。它还引入了新的转移模型以及反映Token半可替代性质的批准模型。
 
-Token 包含一个 EIP-721 等效的 ID 属性，以将自己标识为一个普遍唯一的实体，以便令牌可以在地址之间转移并被批准以 EIP-721 兼容的方式操作。
+Token 包含一个 EIP-721 等效的 ID 属性，以将自己标识为一个普遍唯一的实体，以便Token可以在地址之间转移并被批准以 EIP-721 兼容的方式操作。
 
-代币还包含一个`value`属性，代表代币的数量性质。`value` 属性的含义很像 [EIP-20](./eip-20.md) 令牌的 `balance` 属性。 每个令牌都有一个'插槽'属性，确保具有相同插槽的两个令牌的值被视为可替代，从而为令牌的 value 属性增加了可替代性。
+Token还包含一个`value`属性，代表Token的数量性质。`value` 属性的含义很像 [EIP-20](./eip-20.md) Token的 `balance` 属性。 每个Token都有一个'插槽'属性，确保具有相同插槽的两个Token的值被视为可替代，从而为Token的 value 属性增加了可替代性。
 
-该 EIP 引入了新的代币转移模型以实现半可替代性，包括同一插槽的两个代币之间的价值转移以及从一个代币到一个地址的价值转移。
+该 EIP 引入了新的Token转移模型以实现半可替代性，包括同一插槽的两个Token之间的`value`转移以及从一个Token到一个地址的`value`转移。
 
 ## Motivation
 
-代币化是在加密货币中使用和控制数字资产的最重要趋势之一。 传统上，有两种方法可以做到这一点：可替代代币和不可替代代币。 可替代代币通常使用 EIP-20 标准，其中资产的每个单位都是相同的。 EIP-20 是一种灵活有效的操作可替代代币的方法。 不可替代的代币主要是 EIP-721 代币，这是一种能够根据身份区分数字资产的标准。
+Token化是在加密货币中使用和控制数字资产的最重要趋势之一。 传统上，有两种方法可以做到这一点：可替代Token和不可替代Token。 可替代Token通常使用 EIP-20 标准，其中资产的每个单位都是相同的。 EIP-20 是一种灵活有效的操作可替代Token的方法。 不可替代的Token主要是 EIP-721 Token，这是一种能够根据身份区分数字资产的标准。
 
-然而，两者都有明显的缺点。 例如，EIP-20 要求用户为每个单独的数据结构或可定制属性的组合创建单独的 EIP-20 合约。 在实践中，这导致需要创建大量的 EIP-20 合约。 另一方面，EIP-721 代币没有提供量化特征，大大削弱了它们的可计算性、流动性和可管理性。 例如，如果要使用 EIP-721 创建债券、保险单或归属计划等金融工具，则没有标准接口可供我们控制其中的价值，例如，无法转移一部分 代币所代表的合约中的权益。
+然而，两者都有明显的缺点。 例如，EIP-20 要求用户为每个单独的数据结构或可定制属性的组合创建单独的 EIP-20 合约。 在实践中，这导致需要创建大量的 EIP-20 合约。 另一方面，EIP-721 Token没有提供量化特征，大大削弱了它们的可计算性、流动性和可管理性。 例如，如果要使用 EIP-721 创建债券、保险单或归属计划等金融工具，则没有标准接口可供我们控制其中的`value`，例如，无法转移一部分 Token所代表的合约中的权益。
 
-解决问题的更直观和直接的方法是创建一个具有 EIP-20 的定量特征和 EIP-721 的定性属性的半同质代币。 这种半可替代代币与 EIP-721 的向后兼容性将有助于利用已经在使用的现有基础设施并导致更快的采用。
+解决问题的更直观和直接的方法是创建一个具有 EIP-20 的定量特征和 EIP-721 的定性属性的半同质Token。 这种半可替代Token与 EIP-721 的向后兼容性将有助于利用已经在使用的现有基础设施并导致更快的采用。
 
 ## Specification
 
@@ -201,7 +201,7 @@ interface IERC3525SlotEnumerable is IERC3525 /* , IERC721Enumerable */ {
 }
 ```
 
-插槽级别批准是可选的。 这允许任何想要支持插槽批准的合约，这允许操作员使用相同的插槽管理自己的代币。
+插槽级别批准是可选的。 这允许任何想要支持插槽批准的合约，这允许操作员使用相同的插槽管理自己的Token。
 
 ```solidity
 pragma solidity ^0.8.0;
@@ -300,7 +300,7 @@ interface IERC3525Receiver {
 
 **_Transfer:_**
 
-除了与 EIP-721 兼容的令牌传输方法外，该 EIP 还引入了两种新的传输模型：从 ID 到 ID 的值传输，以及从 ID 到地址的值传输。
+除了与 EIP-721 兼容的Token传输方法外，该 EIP 还引入了两种新的传输模型：从 ID 到 ID 的值传输，以及从 ID 到地址的值传输。
 
 ```solidity
 function transferFrom(uint256 _fromTokenId, uint256 _toTokenId, uint256 _value) external payable;
@@ -308,7 +308,7 @@ function transferFrom(uint256 _fromTokenId, uint256 _toTokenId, uint256 _value) 
 function transferFrom(uint256 _fromTokenId, address _to, uint256 _value) external payable returns (uint256 toTokenId_);
 ```
 
-第一个允许在同一个槽内从一个令牌（由`_fromTokenId`指定）到另一个令牌（由`_toTokenId`指定）的值传输，导致从源令牌的值中减去`_value`并添加到 目标令牌的价值；
+第一个允许在同一个槽内从一个Token（由`_fromTokenId`指定）到另一个Token（由`_toTokenId`指定）的值传输，导致从源Token的值中减去`_value`并添加到 目标Token的`value`；
 
 第二种允许从一个token（由`_fromTokenId`指定）到一个地址（由`_to`指定）的值转移，该值实际上转移到该地址拥有的token，并且应该返回目标token的id . 可以在此方法的'design decision'部分中找到进一步的解释。
 
@@ -317,20 +317,20 @@ function transferFrom(uint256 _fromTokenId, address _to, uint256 _value) externa
 
 **_approving rules:_**
 
-本 EIP 提供四种审批功能，表示不同的审批级别，可描述为全级审批、槽级审批、代币 ID 级审批以及价值级审批。
+本 EIP 提供四种审批功能，表示不同的审批级别，可描述为全级审批、槽级审批、Token ID 级审批以及`value`级审批。
 
-- `setApprovalForAll`, 与 EIP-721 兼容，应表明完全批准级别，这意味着授权运营商能够管理所有者拥有的所有代币，包括其价值。
-- `setApprovalForSlot` (optional) 应该表明批准的槽位级别，这意味着授权的操作员能够管理具有指定槽位的所有代币，包括它们的值，由所有者拥有。
-- token ID 等级的 `approve` 函数, 与 EIP-721 兼容，应指示授权操作员只能管理所有者拥有的指定令牌 ID，包括其值。
-- value 等级的 `approve` 函数, 应该表明授权运营商能够管理所有者拥有的指定令牌的指定最大值。
+- `setApprovalForAll`, 与 EIP-721 兼容，应表明完全批准级别，这意味着授权运营商能够管理所有者拥有的所有Token，包括其`value`。
+- `setApprovalForSlot` (optional) 应该表明批准的槽位级别，这意味着授权的操作员能够管理具有指定槽位的所有Token，包括它们的值，由所有者拥有。
+- token ID 等级的 `approve` 函数, 与 EIP-721 兼容，应指示授权操作员只能管理所有者拥有的指定Token ID，包括其值。
+- value 等级的 `approve` 函数, 应该表明授权运营商能够管理所有者拥有的指定Token的指定最大值。
 - 对于任何批准功能，调用者必须是所有者或已获得更高级别的授权。
 
 **_transferFrom rules:_**
 
-- `transferFrom(uint256 _fromTokenId, uint256 _toTokenId, uint256 _value)` 函数, 应根据以下规则指示从一个代币到另一个代币的`value`转移：
+- `transferFrom(uint256 _fromTokenId, uint256 _toTokenId, uint256 _value)` 函数, 应根据以下规则指示从一个Token到另一个Token的`value`转移：
 
-  - 必须还原除非 `msg.sender` 是 `_fromTokenId` 的所有者、授权操作员或已批准整个代币或至少 `_value` 的操作员。
-  - 如果 `_fromTokenId` 或 `_toTokenId` 是零令牌 ID 或不存在，则必须还原。
+  - 必须还原除非 `msg.sender` 是 `_fromTokenId` 的所有者、授权操作员或已批准整个Token或至少 `_value` 的操作员。
+  - 如果 `_fromTokenId` 或 `_toTokenId` 是零Token ID 或不存在，则必须还原。
   - 如果 `_fromTokenId` 和 `_toTokenId` 的插槽不匹配，则必须还原。
   - 如果 `_value` 超过 `_fromTokenId` 的值或其对运营商的允许，则必须还原。
   - 如果 _toTokenId 的所有者是智能合约，则必须检查 `onERC3525Received` 函数，如果该函数存在，则必须在值转移后调用此函数，如果结果不等于 0x009ce20b，则必须还原；
@@ -338,8 +338,8 @@ function transferFrom(uint256 _fromTokenId, address _to, uint256 _value) externa
 
 - The `transferFrom(uint256 _fromTokenId, address _to, uint256 _value)` function, 将`value`从一个`TokenId`转移到一个地址，应该遵循以下规则：
 
-  - 必须要么找到地址 `_to` 拥有的 EIP-3525 令牌，要么创建一个新的 EIP-3525 令牌，具有相同的 `_fromTokenId` 槽，以接收传输的值。
-  - 必须还原除非 `msg.sender` 是 `_fromTokenId` 的所有者、授权操作员或已批准整个代币或至少 `_value` 的操作员。
+  - 必须要么找到地址 `_to` 拥有的 EIP-3525 Token，要么创建一个新的 EIP-3525 Token，具有相同的 `_fromTokenId` 槽，以接收传输的值。
+  - 必须还原除非 `msg.sender` 是 `_fromTokenId` 的所有者、授权操作员或已批准整个Token或至少 `_value` 的操作员。
   - 如果 `_fromTokenId` 是0 或不存在，则必须还原。
   - 如果 `_to` 是零地址，则必须还原。
   - 如果 `_value` 超过 `_fromTokenId` 的值或其对运营商的允许，则必须还原。
@@ -521,26 +521,26 @@ This is the "EIP-3525 Metadata JSON Schema for `tokenURI(uint)`" referenced abov
 
 ### Metadata generation
 
-该代币标准旨在代表半可替代资产，这些资产最适合金融工具而不是收藏品或游戏内物品。 为了最大限度地提高数字资产的透明度和安全性，我们强烈建议所有实现都应直接从合约代码生成元数据，而不是提供链下服务器 URL。
+该Token标准旨在代表半可替代资产，这些资产最适合金融工具而不是收藏品或游戏内物品。 为了最大限度地提高数字资产的透明度和安全性，我们强烈建议所有实现都应直接从合约代码生成元数据，而不是提供链下服务器 URL。
 
 ### Design decision: Value transfer from token to address
 
-代币的`value`是代币的属性，与地址无关，因此将`value`转移到地址实际上是将其转移到该地址拥有的代币，而不是地址本身。
+Token的`value`是Token的属性，与地址无关，因此将`value`转移到地址实际上是将其转移到该地址拥有的Token，而不是地址本身。
 
-从实现的角度来看，将`value`从代币转移到地址的过程可以如下完成：（1）为接收者的地址创建一个新代币，（2）将`value`从`source token`转移到新代币。所以这个方法并不完全独立于 ID 到 ID 的传输方法，可以看作是包装了上述过程的语法糖。
+从实现的角度来看，将`value`从Token转移到地址的过程可以如下完成：（1）为接收者的地址创建一个新Token，（2）将`value`从`source token`转移到新Token。所以这个方法并不完全独立于 ID 到 ID 的传输方法，可以看作是包装了上述过程的语法糖。
 
-在特殊情况下，如果目标地址拥有一个或多个与源令牌具有相同槽值的令牌，则该方法将具有如下替代实现： (1) 找到该地址拥有的一个具有相同槽值的令牌源令牌，（2）将值转移到找到的令牌。
+在特殊情况下，如果目标地址拥有一个或多个与源Token具有相同槽值的Token，则该方法将具有如下替代实现： (1) 找到该地址拥有的一个具有相同槽值的Token源Token，（2）将值转移到找到的Token。
 
 上述两种实现都应被视为符合本标准。
 
-维护 id-to-address 传输功能的目的是最大限度地与大多数钱包应用程序兼容，因为对于大多数令牌标准，令牌传输的目的地是地址。这种句法包装将帮助钱包应用轻松实现从代币到任何地址的价值转移功能。
+维护 id-to-address 传输功能的目的是最大限度地与大多数钱包应用程序兼容，因为对于大多数Token标准，Token传输的目的地是地址。这种句法包装将帮助钱包应用轻松实现从Token到任何地址的`value`转移功能。
 
 ### Design decision: Notification/acceptance mechanism instead of 'Safe Transfer'
 
-EIP-721 和后来的一些代币标准引入了`safeTransferFrom`模型，为了更好地控制转移代币时的'safety' ，这种机制将不同的转移模式（安全/不安全）的选择留给发送者，并可能导致一些潜在的 问题：
+EIP-721 和后来的一些Token标准引入了`safeTransferFrom`模型，为了更好地控制转移Token时的'safety' ，这种机制将不同的转移模式（安全/不安全）的选择留给发送者，并可能导致一些潜在的 问题：
 
 1. 在大多数情况下，发送方不知道如何在两种传输方式（安全/不安全）之间进行选择；
-2. 如果发送方调用 `safeTransferFrom` 方法，当接收方合约没有实现回调函数时，传输可能会失败，即使该合约可以毫无问题地接收和操作代币。
+2. 如果发送方调用 `safeTransferFrom` 方法，当接收方合约没有实现回调函数时，传输可能会失败，即使该合约可以毫无问题地接收和操作Token。
 
 此 EIP 定义了一个简单的'Check, Notify and Response'模型，以实现更好的灵活性和简单性：
 
@@ -548,14 +548,14 @@ EIP-721 和后来的一些代币标准引入了`safeTransferFrom`模型，为了
 2. 所有 EIP-3525 合约都需要检查接收者合约上是否存在 `onERC3525Received` 并在存在时调用该函数；
 3. 任何智能合约都可以实现`onERC3525Received`函数，用于在收到值后得到通知，在该函数中可以返回某个预定义的值来接受转账，或者任何其他值来拒绝转账。
 
-这种通知/接受机制有一个特殊情况，因为 EIP-3525 允许从一个地址向其自身进行价值转移，因此当实现 `onERC3525Received` 的智能合约向自身转移价值时，也会调用此函数。 这样合约就有责任在自我价值转移和从其他地址接收价值之间选择不同的接受规则。
+这种通知/接受机制有一个特殊情况，因为 EIP-3525 允许从一个地址向其自身进行`value`转移，因此当实现 `onERC3525Received` 的智能合约向自身转移`value`时，也会调用此函数。 这样合约就有责任在自我`value`转移和从其他地址接收`value`之间选择不同的接受规则。
 
 ### Design decision: Relationship between different approval models
 
-为了与 EIP-721 的语义兼容性以及代币值操作的灵活性，我们决定定义一些批准级别之间的关系，如下所示：
+为了与 EIP-721 的语义兼容性以及Token值操作的灵活性，我们决定定义一些批准级别之间的关系，如下所示：
 
-1. 一个 id 的批准将导致被批准的操作员从这个 id 部分转移值的能力，这将简化一个 id 的值批准。 但是，通证中总价值的批准不应导致被批准的运营商转移通证实体的能力。
-2. `setApprovalForAll` 将导致能够从任何代币部分转移价值，以及批准从任何代币到第三方的部分价值转移的能力，这将简化一个地址拥有的所有代币的价值转移和批准 .
+1. 一个 id 的批准将导致被批准的操作员从这个 id 部分转移值的能力，这将简化一个 id 的值批准。 但是，通证中总`value`的批准不应导致被批准的运营商转移通证实体的能力。
+2. `setApprovalForAll` 将导致能够从任何Token部分转移`value`，以及批准从任何Token到第三方的部分`value`转移的能力，这将简化一个地址拥有的所有Token的`value`转移和批准 .
 
 ## Backwards Compatibility
 
